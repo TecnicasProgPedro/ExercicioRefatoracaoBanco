@@ -12,13 +12,15 @@ import javafx.stage.Stage;
 public class TelaEstatísticas {
 	private List<Operacao> operacoes;
 	private Conta conta;
+	private Stage mainStage;
+	private Stage cenaEstats;
 	
 	public TelaEstatísticas(Conta conta, List<Operacao> operacoes) {
 		this.conta=conta;
 		this.operacoes=operacoes;
 	}
 	
-	public void start(Stage primaryStage) {
+	public Scene getTelaEstatísticas(Stage primaryStage) {
         primaryStage.setTitle("JavaFX Welcome");
         
         primaryStage.show();
@@ -30,6 +32,8 @@ public class TelaEstatísticas {
 
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
+        
+        return scene;
     }
 	
 	
