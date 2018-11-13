@@ -13,6 +13,11 @@ public class TelaEstatísticas {
 	private List<Operacao> operacoes;
 	private Conta conta;
 	
+	public TelaEstatísticas(Conta conta, List<Operacao> operacoes) {
+		this.conta=conta;
+		this.operacoes=operacoes;
+	}
+	
 	public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX Welcome");
         
