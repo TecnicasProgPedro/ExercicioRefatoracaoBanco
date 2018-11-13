@@ -109,8 +109,9 @@ public class TelaOperacoes {
         	  if (valor < 0.0) {
         		  throw new NumberFormatException("Valor invalido");
         	  }
-        	  conta.deposito(valor);
+        	  
         	  GregorianCalendar date = new GregorianCalendar();
+        	  conta.deposito(valor);
         	  Operacao op = new Operacao(
         			  date.get(GregorianCalendar.DAY_OF_MONTH),
         			  date.get(GregorianCalendar.MONTH+1),
@@ -143,6 +144,28 @@ public class TelaOperacoes {
           	  }
           	  conta.retirada(valor);
         	  GregorianCalendar date = new GregorianCalendar();
+        	  
+        	//-----------------------------------------------------------
+        	  double ValorTotalDia=valor;
+        	  for(Operacao op: operacoes) {
+        		  if(op.getNumeroConta()==conta.getNumero()) {
+        			  if(op.getAno()==date.get(GregorianCalendar.YEAR)) {
+        				  if(op.getMes()==date.get(GregorianCalendar.MONTH+1)) {
+        					  if(op.getDia()==date.get(GregorianCalendar.DAY_OF_MONTH)) {
+        						  if(op.getTipoOperacao()==1) {
+        			       			  ValorTotalDia+=op.getValorOperacao();
+        						  }
+        					  }
+        				  }
+        			  }
+        		  }
+        	  }
+        	  
+        	  if(ValorTotalDia>conta.getLimRetiradaDiaria()) {
+        		  throw new NumberFormatException("Limite Diario Atingido");
+        	  }
+        	  //----------------------------------------------
+        	  
         	  Operacao op = new Operacao(
         			  date.get(GregorianCalendar.DAY_OF_MONTH),
         			  date.get(GregorianCalendar.MONTH+1),
