@@ -26,6 +26,7 @@ public class App extends Application {
 	private List<Operacao> operacoes;
 	
 	private TelaEntrada telaEntrada;
+	private TelaEstatísticas telaEstatisticas;// testando!!!!!!!!!!!!
 	
     @Override
     public void start(Stage primaryStage) {
@@ -36,7 +37,7 @@ public class App extends Application {
     	primaryStage.setTitle("$$ Banco NOSSA GRANA $$");
 
     	telaEntrada = new TelaEntrada(primaryStage, contas, operacoes); // << Substituir por singleton
-
+    	telaEstatisticas = new TelaEstatísticas(contas.get(130),operacoes);// testando!!!!!!!!!!!!
         primaryStage.setScene(telaEntrada.getTelaEntrada());
         primaryStage.show();
     }
