@@ -11,24 +11,25 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class TelaEstatísticas extends Application {
+public class TelaEstatísticas {
 	private List<Operacao> operacoes;
 	private Conta conta;
 	private Stage mainStage;
+	private Scene telaOP;
 	
-	public TelaEstatísticas(List<Operacao> operacoes,Conta conta,Stage mainStage) throws IOException{
+	public TelaEstatísticas(List<Operacao> operacoes,Conta conta,Stage mainStage, Scene telaOP) throws IOException{
 		this.operacoes=operacoes;
 		this.conta=conta;
 		this.mainStage=mainStage;
-		start(mainStage);
+		this.telaOP=telaOP;
 	}
 	
-	@Override
-	public void start(Stage primaryStage) throws IOException {
-		Pane root=FXMLLoader.load(getClass().getResource("Sample.fxml"));
-		Scene scene=new Scene(root,300,200);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+	public Scene getEstatisticas() throws IOException {
+		Pane root=FXMLLoader.load(getClass().getResource("FXMLtelaEstats.fxml"));
+		Scene sceneEstats=new Scene(root,300,200);
+		
+	
+		return sceneEstats;
 	}
 	
 	//-------------------------------------
