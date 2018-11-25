@@ -2,16 +2,13 @@ package com.bcopstein.ExercicioRefatoracaoBanco;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Observable;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,8 +19,8 @@ public class TelaEstatísticas {
 	private List<Operacao> operacoes;
 	private Conta conta;
 	private Stage mainStage;
-
 	private Scene telaOP;
+	private Stage cenaEstats;
 
 	public TelaEstatísticas(List<Operacao> operacoes, Conta conta, Stage mainStage, Scene telaOP) throws IOException {
 		this.operacoes = operacoes;
@@ -33,20 +30,17 @@ public class TelaEstatísticas {
 	}
 
 	public Scene getEstatisticas() throws IOException {
-		Pane root = FXMLLoader.load(getClass().getResource("FXMLtelaEstats.fxml"));
-		Scene sceneEstats = new Scene(root, 300, 200);
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
 
-		return sceneEstats;
+        Scene cenaEstatisticas = new Scene(grid);
+        return cenaEstatisticas;
 	}
 
 	// -------------------------------------
-	private Stage cenaEstats;
-
-	public TelaEstatísticas(Conta conta, List<Operacao> operacoes) {
-		this.conta = conta;
-		this.operacoes = operacoes;
-	}
-
 	public Scene getTelaEstatísticas(Stage primaryStage) {
 		primaryStage.setTitle("JavaFX Welcome");
 
