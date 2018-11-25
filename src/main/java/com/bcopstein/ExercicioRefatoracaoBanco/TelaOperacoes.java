@@ -1,4 +1,5 @@
 package com.bcopstein.ExercicioRefatoracaoBanco;
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,11 +96,13 @@ public class TelaOperacoes {
 
         Button btnCredito = new Button("Credito");
         Button btnDebito = new Button("Debito");
+        Button btnEstats = new Button("Estatisticas");//--
         Button btnVoltar = new Button("Voltar");
         HBox hbBtn = new HBox(20);
         hbBtn.setAlignment(Pos.TOP_CENTER);
         hbBtn.getChildren().add(btnCredito);
         hbBtn.getChildren().add(btnDebito);
+        hbBtn.getChildren().add(btnEstats);//--
         hbBtn.getChildren().add(btnVoltar);
         grid.add(hbBtn, 1, 2);
         
@@ -191,7 +194,15 @@ public class TelaOperacoes {
   				alert.showAndWait();
           	}        	
         });
-
+        btnEstats.setOnAction(e->{//--
+        	try {
+				TelaEstatísticas telaEstats = new TelaEstatísticas(operacoes,conta,mainStage,cenaOperacoes);
+				Scene scene = telaEstats.getEstatisticas();
+				mainStage.setScene(scene);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+        });
         btnVoltar.setOnAction(e->{
         	mainStage.setScene(cenaEntrada);
         });
