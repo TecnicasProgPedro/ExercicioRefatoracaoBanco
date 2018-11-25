@@ -1,12 +1,37 @@
 package com.bcopstein.ExercicioRefatoracaoBanco;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class TelaEstatísticas {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class TelaEstatísticas extends Application {
 	private List<Operacao> operacoes;
 	private Conta conta;
-
+	private Stage mainStage;
+	
+	public TelaEstatísticas(List<Operacao> operacoes,Conta conta,Stage mainStage) throws IOException{
+		this.operacoes=operacoes;
+		this.conta=conta;
+		this.mainStage=mainStage;
+		start(mainStage);
+	}
+	
+	@Override
+	public void start(Stage primaryStage) throws IOException {
+		Pane root=FXMLLoader.load(getClass().getResource("Sample.fxml"));
+		Scene scene=new Scene(root,300,200);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+	
+	//-------------------------------------
 	public double SaldoMedioMes(int mes, int ano) {
 		double Soma = 0;
 		for (Operacao op : operacoes) {
