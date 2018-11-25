@@ -1,7 +1,11 @@
 package com.bcopstein.ExercicioRefatoracaoBanco;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.util.ArrayList;
+=======
+
+>>>>>>> 28f9169011bf769bee3668826de9963164511912
 import java.util.List;
 import java.util.Observable;
 
@@ -11,10 +15,17 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
 public class TelaEstatísticas {
 	private List<Operacao> operacoes;
 	private Conta conta;
 	private Stage mainStage;
+<<<<<<< HEAD
 	private Scene telaOP;
 	
 	public TelaEstatísticas(List<Operacao> operacoes,Conta conta,Stage mainStage, Scene telaOP) throws IOException{
@@ -33,6 +44,33 @@ public class TelaEstatísticas {
 	}
 	
 	//-------------------------------------
+=======
+	private Stage cenaEstats;
+	
+	public TelaEstatísticas(Conta conta, List<Operacao> operacoes) {
+		this.conta=conta;
+		this.operacoes=operacoes;
+	}
+	
+	public Scene getTelaEstatísticas(Stage primaryStage) {
+        primaryStage.setTitle("JavaFX Welcome");
+        
+        primaryStage.show();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Scene scene = new Scene(grid, 300, 275);
+        primaryStage.setScene(scene);
+        
+        return scene;
+    }
+	
+	
+	
+>>>>>>> 28f9169011bf769bee3668826de9963164511912
 	public double SaldoMedioMes(int mes, int ano) {
 		double Soma = 0;
 		for (Operacao op : operacoes) {
