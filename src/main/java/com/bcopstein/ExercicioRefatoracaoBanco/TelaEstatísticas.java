@@ -2,6 +2,7 @@ package com.bcopstein.ExercicioRefatoracaoBanco;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 import javafx.application.Application;
@@ -27,7 +28,7 @@ public class TelaEstatísticas {
 	private Conta conta;
 	private Stage mainStage;
 	private Scene telaOP;
-	private Stage cenaEstats;
+	//private Stage cenaEstats;
 
 	public TelaEstatísticas(List<Operacao> operacoes, Conta conta, Stage mainStage, Scene telaOP) throws IOException {
 		this.operacoes = operacoes;
@@ -57,7 +58,11 @@ public class TelaEstatísticas {
         Button btnEnter = new Button("Enter");
         HBox hbBtn = new HBox(20);
         hbBtn.setAlignment(Pos.TOP_CENTER);
+        Label mensagem01=new Label("Mes:");
+        Label mensagem02=new Label("Ano:");
+    	hbBtn.getChildren().add(mensagem01);
         hbBtn.getChildren().add(selecionarMes);
+    	hbBtn.getChildren().add(mensagem02);
         hbBtn.getChildren().add(selecionarAno);
         hbBtn.getChildren().add(btnEnter);
         hbBtn.getChildren().add(btnVoltar);
@@ -65,6 +70,7 @@ public class TelaEstatísticas {
         
         HBox box = new HBox(20);
         box.setAlignment(Pos.BOTTOM_CENTER);
+
         String saldoM="Saldo Medio:";
     	Label saldoMedio=new Label(saldoM);
     	box.getChildren().add(saldoMedio);
@@ -76,14 +82,31 @@ public class TelaEstatísticas {
     	box.getChildren().add(debitosData);
     	grid.add(box, 1, 3);
     	
+    	HBox boxbox = new HBox(20);
+        box.setAlignment(Pos.BOTTOM_CENTER);
+        Label Avisos = new Label();
+    	box.getChildren().add(Avisos);
+        grid.add(boxbox, 1, 4);
+    	
+    	GregorianCalendar date = new GregorianCalendar();
     	try {
-    		
+    		selecionarMes.setValue(date.get(GregorianCalendar.MONTH+1));
+    		selecionarAno.setValue(date.get(GregorianCalendar.YEAR));
+    		creditosData.setText(creditosD+creditosMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR)));
+    		debitosData.setText(debitosD+debitosMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR)));
+    		saldoMedio.setText(saldoM+SaldoMedioMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR)));
     	}
-        catch(IOException e1){
-        	
+        catch(NumberFormatException ex){
+        	Avisos.setText("Nenhuma operacao no mes e ano atual!");
+        	creditosData.setText(creditosD+0);
+    		debitosData.setText(debitosD+0);
+    		saldoMedio.setText(saldoM+0);
         }
+    	
         btnEnter.setOnAction(e->{
         	saldoMedio.setText(saldoM + SaldoMedioMes(selecionarMes.getValue(),selecionarAno.getValue()));
+        	creditosData.setText(creditosD+creditosMes(selecionarMes.getValue(),selecionarAno.getValue()));
+    		debitosData.setText(debitosD+debitosMes(selecionarMes.getValue(),selecionarAno.getValue()));
         });
         btnVoltar.setOnAction(e->{
         	mainStage.setScene(telaOP);
