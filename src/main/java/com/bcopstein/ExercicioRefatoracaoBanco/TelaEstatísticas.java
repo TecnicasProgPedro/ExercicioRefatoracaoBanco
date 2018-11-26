@@ -75,7 +75,13 @@ public class TelaEstatísticas {
     	Label debitosData=new Label(debitosD);
     	box.getChildren().add(debitosData);
     	grid.add(box, 1, 3);
-        
+    	
+    	try {
+    		
+    	}
+        catch(IOException e1){
+        	
+        }
         btnEnter.setOnAction(e->{
         	saldoMedio.setText(saldoM + SaldoMedioMes(selecionarMes.getValue(),selecionarAno.getValue()));
         });
