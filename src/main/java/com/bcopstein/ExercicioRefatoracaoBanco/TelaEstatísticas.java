@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -62,6 +63,22 @@ public class TelaEstatísticas {
         hbBtn.getChildren().add(btnVoltar);
         grid.add(hbBtn, 1, 2);
         
+        HBox box = new HBox(20);
+        box.setAlignment(Pos.BOTTOM_CENTER);
+        String saldoM="Saldo Medio:";
+    	Label saldoMedio=new Label(saldoM);
+    	box.getChildren().add(saldoMedio);
+    	String creditosD="Creditos:";
+    	Label creditosData=new Label(creditosD);
+    	box.getChildren().add(creditosData);
+    	String debitosD="Debitos:";
+    	Label debitosData=new Label(debitosD);
+    	box.getChildren().add(debitosData);
+    	grid.add(box, 1, 3);
+        
+        btnEnter.setOnAction(e->{
+        	saldoMedio.setText(saldoM);
+        });
         btnVoltar.setOnAction(e->{
         	mainStage.setScene(telaOP);
         });
