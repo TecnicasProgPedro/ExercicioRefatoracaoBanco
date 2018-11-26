@@ -77,7 +77,7 @@ public class TelaEstatísticas {
     	grid.add(box, 1, 3);
         
         btnEnter.setOnAction(e->{
-        	saldoMedio.setText(saldoM);
+        	saldoMedio.setText(saldoM + SaldoMedioMes(selecionarMes.getValue(),selecionarAno.getValue()));
         });
         btnVoltar.setOnAction(e->{
         	mainStage.setScene(telaOP);
