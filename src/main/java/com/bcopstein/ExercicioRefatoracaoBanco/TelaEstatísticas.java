@@ -7,12 +7,18 @@ import java.util.Observable;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class TelaEstatísticas {
@@ -36,6 +42,25 @@ public class TelaEstatísticas {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
+        String dadosCorr = conta.getNumero()+" : "+conta.getCorrentista();
+        Text scenetitle = new Text(dadosCorr);
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        grid.add(scenetitle, 0, 0, 2, 1);
+        
+        ChoiceBox<Integer> selecionarMes=new ChoiceBox(); 
+        ChoiceBox<Integer> selecionarAno=new ChoiceBox();
+        
+        Button btnVoltar = new Button("Voltar");
+        Button btnEnter = new Button("Enter");
+        HBox hbBtn = new HBox(20);
+        hbBtn.setAlignment(Pos.TOP_CENTER);
+        hbBtn.getChildren().add(btnEnter);
+        hbBtn.getChildren().add(btnVoltar);
+        grid.add(hbBtn, 1, 2);
+        
+        btnVoltar.setOnAction(e->{
+        	mainStage.setScene(telaOP);
+        });
         Scene cenaEstatisticas = new Scene(grid);
         return cenaEstatisticas;
 	}
