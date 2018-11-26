@@ -87,28 +87,52 @@ public class TelaEstatísticas {
 	}
 
 	// -------------------------------------
-	public double SaldoMedioMes(int mes, int ano) {
-		double Soma = 0;
+	public double creditosMes(int mes, int ano) {
+		double soma = 0;
 		for (Operacao op : operacoes) {
-			if (conta.getNumero() == op.getNumeroConta()) {
-				if (op.getAno() == ano) {
-					if (op.getMes() > mes) {
-						if (op.getTipoOperacao() == 1) {
-							Soma -= op.getValorOperacao();
-						} else {
-							Soma += op.getValorOperacao();
-						}
-					}
-				} else if (op.getAno() > ano) {
-					if (op.getTipoOperacao() == 1) {
-						Soma -= op.getValorOperacao();
-					} else {
-						Soma += op.getValorOperacao();
-					}
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
+				if(op.getTipoOperacao()==0) {
+					soma+=op.getValorOperacao();
 				}
 			}
 		}
-		return (conta.getSaldo() - (Soma)) / 30;
+		return soma;
+	}
+	public double debitosMes(int mes, int ano) {
+		double soma = 0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
+				if(op.getTipoOperacao()==1) {
+					soma+=op.getValorOperacao();
+				}
+			}
+		}
+		return soma;
+	}
+	public double SaldoMedioMes(int mes, int ano) {
+		double Saldo = 0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()<=ano && op.getMes()<mes) {
+				if(op.getTipoOperacao()==0) {
+					Saldo+=op.getValorOperacao();
+				}
+				else {
+					Saldo-=op.getValorOperacao();
+				}
+			}
+		}
+		double somaSaldo=0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
+				if(op.getTipoOperacao()==0) {
+					somaSaldo+=(Saldo+op.getValorOperacao());
+				}
+				else {
+					somaSaldo+=(Saldo-op.getValorOperacao());
+				}
+			}
+		}
+		return somaSaldo/30;
 	}
 
 	public ArrayList<Integer> listaMes() {
