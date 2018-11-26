@@ -49,11 +49,15 @@ public class TelaEstatísticas {
         
         ChoiceBox<Integer> selecionarMes=new ChoiceBox(); 
         ChoiceBox<Integer> selecionarAno=new ChoiceBox();
+        selecionarMes.getItems().addAll(listaMes());
+        selecionarAno.getItems().addAll(listaAno());
         
         Button btnVoltar = new Button("Voltar");
         Button btnEnter = new Button("Enter");
         HBox hbBtn = new HBox(20);
         hbBtn.setAlignment(Pos.TOP_CENTER);
+        hbBtn.getChildren().add(selecionarMes);
+        hbBtn.getChildren().add(selecionarAno);
         hbBtn.getChildren().add(btnEnter);
         hbBtn.getChildren().add(btnVoltar);
         grid.add(hbBtn, 1, 2);
@@ -66,22 +70,6 @@ public class TelaEstatísticas {
 	}
 
 	// -------------------------------------
-	public Scene getTelaEstatísticas(Stage primaryStage) {
-		primaryStage.setTitle("JavaFX Welcome");
-
-		primaryStage.show();
-		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 25, 25, 25));
-
-		Scene scene = new Scene(grid, 300, 275);
-		primaryStage.setScene(scene);
-
-		return scene;
-	}
-
 	public double SaldoMedioMes(int mes, int ano) {
 		double Soma = 0;
 		for (Operacao op : operacoes) {
