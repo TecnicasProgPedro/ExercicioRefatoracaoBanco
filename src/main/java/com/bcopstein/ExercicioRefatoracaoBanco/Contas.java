@@ -31,6 +31,10 @@ public class Contas {
 		 return this.contas;
 	 }
 	 
+	 public Conta contaEmUso(int nroConta) {
+		 return contas.get(nroConta);
+	 }
+	 
 	 private Map<Integer, Conta> loadContas() {
 			Map<Integer, Conta> contas = new HashMap<>();
 
