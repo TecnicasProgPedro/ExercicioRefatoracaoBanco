@@ -40,7 +40,6 @@ public class TelaEntrada {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(25, 25, 25, 25));
-		// grid.setGridLinesVisible(true);
 
 		Text scenetitle = new Text("Bem vindo ao Banco Nossa Grana");
 		scenetitle.setId("welcome-text");
