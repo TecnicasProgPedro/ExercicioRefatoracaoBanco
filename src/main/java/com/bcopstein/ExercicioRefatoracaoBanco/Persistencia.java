@@ -1,31 +1,27 @@
 package com.bcopstein.ExercicioRefatoracaoBanco;
-import java.util.List;
-import java.util.Map;
-
 
 public class Persistencia {
 	private static Persistencia INSTANCE;
-	private Map<Integer,Conta> contas;
-	private List<Operacao> operacoes;
-	
+	private Contas contas;
+	private Operacoes operacoes;
+
 	public static Persistencia getInstance() {
-		if(INSTANCE==null) {
-			INSTANCE=new Persistencia();
+		if (INSTANCE == null) {
+			INSTANCE = new Persistencia();
 		}
 		return INSTANCE;
 	}
-	
+
 	private Persistencia() {
-		Contas c=new Contas();
-		Operacoes o=new Operacoes();
-		this.contas=c.loadContas();
-		this.operacoes=o.loadOperacoes();
+		this.operacoes = Operacoes.getInstance();
+		this.contas = Contas.getInstance();
 	}
-	
-	public Map<Integer,Conta> getContas(){
+
+	public Contas getContas() {
 		return this.contas;
 	}
-	public List<Operacao> getOperacoes(){
+
+	public Operacoes getOperacoes() {
 		return this.operacoes;
 	}
 }
