@@ -15,6 +15,8 @@ import java.util.Scanner;
 public class Contas {
 	 private final String NomeBDContas = "BDContasBNG.txt";
 	 
+	 public Contas() {}
+	 
 	 public Map<Integer,Conta> loadContas(){
 	    	Map<Integer,Conta> contas = new HashMap<>();
 	    	
