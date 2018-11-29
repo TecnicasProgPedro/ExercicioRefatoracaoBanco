@@ -28,17 +28,19 @@ public class TelaOperacoes {
 	private Scene cenaOperacoes;
 	private List<Operacao> operacoes;
 	private ObservableList<Operacao> operacoesConta;
-
+	private LogicaOperacoes logicaOperacoes;
 	private Conta conta; 
-
+	private VALIDACOES validacoes;
 	private TextField tfValorOperacao;
 	private TextField tfSaldo;
 
-	public TelaOperacoes(Stage mainStage, Scene telaEntrada, Conta conta, List<Operacao> operacoes) { // Tirar esse parâmetro																					// conta
+	public TelaOperacoes(Stage mainStage, Scene telaEntrada, Conta conta, List<Operacao> operacoes, LogicaOperacoes logicaOperacoes) {																			// conta
 		this.mainStage = mainStage;
 		this.cenaEntrada = telaEntrada;
 		this.conta = conta;
 		this.operacoes = operacoes;
+		this.logicaOperacoes=logicaOperacoes;
+		this.validacoes=VALIDACOES.getInstance();
 	}
 
 	public Scene getTelaOperacoes() {
@@ -102,7 +104,7 @@ public class TelaOperacoes {
         hbBtn.setAlignment(Pos.TOP_CENTER);
         hbBtn.getChildren().add(btnCredito);
         hbBtn.getChildren().add(btnDebito);
-        hbBtn.getChildren().add(btnEstats);//--
+        hbBtn.getChildren().add(btnEstats);
         hbBtn.getChildren().add(btnVoltar);
         grid.add(hbBtn, 1, 2);
         
@@ -112,9 +114,8 @@ public class TelaOperacoes {
         	  if (valor < 0.0) {
         		  throw new NumberFormatException("Valor invalido");
         	  }
-        	  
         	  GregorianCalendar date = new GregorianCalendar();
-        	  conta.deposito(valor);
+        	  logicaOperacoes.OperaçaoDeCredito(conta, valor);
         	  Operacao op = new Operacao(
         			  date.get(GregorianCalendar.DAY_OF_MONTH),
         			  date.get(GregorianCalendar.MONTH+1),
@@ -145,30 +146,11 @@ public class TelaOperacoes {
           	  if (valor < 0.0 || valor > conta.getSaldo()) {
           		  throw new NumberFormatException("Saldo insuficiente");
           	  }
-          	  conta.retirada(valor);
-        	  GregorianCalendar date = new GregorianCalendar();
-        	  
-        	//-----------------------------------------------------------
-        	  double ValorTotalDia=valor;
-        	  for(Operacao op: operacoes) {
-        		  if(op.getNumeroConta()==conta.getNumero()) {
-        			  if(op.getAno()==date.get(GregorianCalendar.YEAR)) {
-        				  if(op.getMes()==date.get(GregorianCalendar.MONTH+1)) {
-        					  if(op.getDia()==date.get(GregorianCalendar.DAY_OF_MONTH)) {
-        						  if(op.getTipoOperacao()==1) {
-        			       			  ValorTotalDia+=op.getValorOperacao();
-        						  }
-        					  }
-        				  }
-        			  }
-        		  }
-        	  }
-        	  
-        	  if(ValorTotalDia>conta.getLimRetiradaDiaria()) {
+        	  if(validacoes.valida(valor, conta)==false) {
         		  throw new NumberFormatException("Limite Diario Atingido");
         	  }
-        	  //----------------------------------------------
-        	  
+          	  logicaOperacoes.OperacaoDeDebito(conta, valor);
+        	  GregorianCalendar date = new GregorianCalendar();   	  
         	  Operacao op = new Operacao(
         			  date.get(GregorianCalendar.DAY_OF_MONTH),
         			  date.get(GregorianCalendar.MONTH+1),
@@ -196,7 +178,7 @@ public class TelaOperacoes {
         });
         btnEstats.setOnAction(e->{//--
         	try {
-				TelaEstatísticas telaEstats = new TelaEstatísticas(operacoes,conta,mainStage,cenaOperacoes);
+				TelaEstatísticas telaEstats = new TelaEstatísticas(conta,mainStage,cenaOperacoes);
 				Scene scene = telaEstats.getEstatisticas();
 				mainStage.setScene(scene);
 			} catch (IOException e1) {
