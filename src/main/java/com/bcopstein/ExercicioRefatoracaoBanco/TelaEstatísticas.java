@@ -1,40 +1,31 @@
 package com.bcopstein.ExercicioRefatoracaoBanco;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Observable;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 public class TelaEstatísticas {
-	private List<Operacao> operacoes;
 	private Conta conta;
 	private Stage mainStage;
 	private Scene telaOP;
-	//private Stage cenaEstats;
-
-	public TelaEstatísticas(List<Operacao> operacoes, Conta conta, Stage mainStage, Scene telaOP) throws IOException {
-		this.operacoes = operacoes;
+	private LogicaOperacoes logicaOperacoes;
+	
+	public TelaEstatísticas(Conta conta, Stage mainStage, Scene telaOP) throws IOException {
 		this.conta = conta;
 		this.mainStage = mainStage;
 		this.telaOP = telaOP;
+		this.logicaOperacoes=LogicaOperacoes.getInstance();
 	}
 
 	public Scene getEstatisticas() throws IOException {
@@ -49,10 +40,10 @@ public class TelaEstatísticas {
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
         
-        ChoiceBox<Integer> selecionarMes=new ChoiceBox(); 
-        ChoiceBox<Integer> selecionarAno=new ChoiceBox();
-        selecionarMes.getItems().addAll(listaMes());
-        selecionarAno.getItems().addAll(listaAno());
+        ChoiceBox<Integer> selecionarMes=new ChoiceBox<Integer>(); 
+        ChoiceBox<Integer> selecionarAno=new ChoiceBox<Integer>();
+        selecionarMes.getItems().addAll(logicaOperacoes.listMes());
+        selecionarAno.getItems().addAll(logicaOperacoes.listAno());
         
         Button btnVoltar = new Button("Voltar");
         Button btnEnter = new Button("Enter");
@@ -92,9 +83,9 @@ public class TelaEstatísticas {
     	try {
     		selecionarMes.setValue(date.get(GregorianCalendar.MONTH+1));
     		selecionarAno.setValue(date.get(GregorianCalendar.YEAR));
-    		creditosData.setText(creditosD+creditosMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR)));
-    		debitosData.setText(debitosD+debitosMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR)));
-    		saldoMedio.setText(saldoM+SaldoMedioMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR)));
+    		creditosData.setText(creditosD+logicaOperacoes.creditoMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR),conta));
+    		debitosData.setText(debitosD+logicaOperacoes.debitoMes(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR),conta));
+    		saldoMedio.setText(saldoM + logicaOperacoes.SolicitaSaldoMedio(date.get(GregorianCalendar.MONTH+1),date.get(GregorianCalendar.YEAR),conta));
     	}
         catch(NumberFormatException ex){
         	Avisos.setText("Nenhuma operacao no mes e ano atual!");
@@ -104,92 +95,14 @@ public class TelaEstatísticas {
         }
     	
         btnEnter.setOnAction(e->{
-        	saldoMedio.setText(saldoM + SaldoMedioMes(selecionarMes.getValue(),selecionarAno.getValue()));
-        	creditosData.setText(creditosD+creditosMes(selecionarMes.getValue(),selecionarAno.getValue()));
-    		debitosData.setText(debitosD+debitosMes(selecionarMes.getValue(),selecionarAno.getValue()));
+        	saldoMedio.setText(saldoM + logicaOperacoes.SolicitaSaldoMedio(selecionarMes.getValue(),selecionarAno.getValue(),conta));
+        	creditosData.setText(creditosD+logicaOperacoes.creditoMes(selecionarMes.getValue(),selecionarAno.getValue(),conta));
+    		debitosData.setText(debitosD+logicaOperacoes.debitoMes(selecionarMes.getValue(),selecionarAno.getValue(),conta));
         });
         btnVoltar.setOnAction(e->{
         	mainStage.setScene(telaOP);
         });
         Scene cenaEstatisticas = new Scene(grid);
         return cenaEstatisticas;
-	}
-
-	// -------------------------------------
-	public double creditosMes(int mes, int ano) {
-		double soma = 0;
-		for (Operacao op : operacoes) {
-			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
-				if(op.getTipoOperacao()==0) {
-					soma+=op.getValorOperacao();
-				}
-			}
-		}
-		return soma;
-	}
-	public double debitosMes(int mes, int ano) {
-		double soma = 0;
-		for (Operacao op : operacoes) {
-			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
-				if(op.getTipoOperacao()==1) {
-					soma+=op.getValorOperacao();
-				}
-			}
-		}
-		return soma;
-	}
-	public double SaldoMedioMes(int mes, int ano) {
-		double Saldo = 0;
-		for (Operacao op : operacoes) {
-			if(op.getNumeroConta()==conta.getNumero() && op.getAno()<=ano && op.getMes()<mes) {
-				if(op.getTipoOperacao()==0) {
-					Saldo+=op.getValorOperacao();
-				}
-				else {
-					Saldo-=op.getValorOperacao();
-				}
-			}
-		}
-		double somaSaldo=0;
-		for (Operacao op : operacoes) {
-			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
-				if(op.getTipoOperacao()==0) {
-					somaSaldo+=(Saldo+op.getValorOperacao());
-				}
-				else {
-					somaSaldo+=(Saldo-op.getValorOperacao());
-				}
-			}
-		}
-		return somaSaldo/30;
-	}
-
-	public ArrayList<Integer> listaMes() {
-		ArrayList<Integer> listaMes = new ArrayList();
-		for (Operacao op : operacoes) {
-			if (ok(listaMes, op.getMes()) == true) {
-				listaMes.add(op.getMes());
-			}
-		}
-		return listaMes;
-	}
-
-	public ArrayList<Integer> listaAno() {
-		ArrayList<Integer> listaAno = new ArrayList();
-		for (Operacao op : operacoes) {
-			if (ok(listaAno, op.getAno()) == true) {
-				listaAno.add(op.getAno());
-			}
-		}
-		return listaAno;
-	}
-
-	private boolean ok(ArrayList<Integer> lista, int num) {
-		for (int i : lista) {
-			if (i == num) {
-				return false;
-			}
-		}
-		return true;
 	}
 }
