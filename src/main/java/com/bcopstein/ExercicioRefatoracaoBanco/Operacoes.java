@@ -15,6 +15,8 @@ import java.util.Scanner;
 public class Operacoes {
 	private final String NomeBDOperacoes = "BDOperBNG.txt";
 	
+	public Operacoes() {}
+	
 	public void saveOperacoes(Collection<Operacao> operacoes) {
         Path path1 = Paths.get(NomeBDOperacoes); 
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(path1, Charset.defaultCharset()))) 
