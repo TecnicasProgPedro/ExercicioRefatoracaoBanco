@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,32 @@ public class Operacoes {
 	}
 	public List<Operacao> getOperacoes(){
 		return this.operacoes;
+	}
+	
+	public double SaldoMedioMes(int mes, int ano,Conta conta) {
+		double Saldo = 0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()<=ano && op.getMes()<mes) {
+				if(op.getTipoOperacao()==0) {
+					Saldo+=op.getValorOperacao();
+				}
+				else {
+					Saldo-=op.getValorOperacao();
+				}
+			}
+		}
+		double somaSaldo=0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
+				if(op.getTipoOperacao()==0) {
+					somaSaldo+=(Saldo+op.getValorOperacao());
+				}
+				else {
+					somaSaldo+=(Saldo-op.getValorOperacao());
+				}
+			}
+		}
+		return somaSaldo/30;
 	}
 	
 	private List<Operacao> loadOperacoes() {
@@ -77,5 +104,55 @@ public class Operacoes {
 		} catch (IOException x) {
 			System.err.format("Erro de E/S: %s%n", x);
 		}
+	}
+	public double creditosMes(int mes, int ano, Conta conta) {
+		double soma = 0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
+				if(op.getTipoOperacao()==0) {
+					soma+=op.getValorOperacao();
+				}
+			}
+		}
+		return soma;
+	}
+	public double debitosMes(int mes, int ano, Conta conta) {
+		double soma = 0;
+		for (Operacao op : operacoes) {
+			if(op.getNumeroConta()==conta.getNumero() && op.getAno()==ano && op.getMes()==mes) {
+				if(op.getTipoOperacao()==1) {
+					soma+=op.getValorOperacao();
+				}
+			}
+		}
+		return soma;
+	}
+	public ArrayList<Integer> listaMes() {
+		ArrayList<Integer> listaMes = new ArrayList<Integer>();
+		for (Operacao op : operacoes) {
+			if (ok(listaMes, op.getMes()) == true) {
+				listaMes.add(op.getMes());
+			}
+		}
+		return listaMes;
+	}
+
+	public ArrayList<Integer> listaAno() {
+		ArrayList<Integer> listaAno = new ArrayList<Integer>();
+		for (Operacao op : operacoes) {
+			if (ok(listaAno, op.getAno()) == true) {
+				listaAno.add(op.getAno());
+			}
+		}
+		return listaAno;
+	}
+
+	private boolean ok(ArrayList<Integer> lista, int num) {
+		for (int i : lista) {
+			if (i == num) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
